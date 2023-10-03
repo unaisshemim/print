@@ -1,19 +1,20 @@
-import { app, shell, BrowserWindow, webContents } from 'electron'
+import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import image from '../../build/foodbook.png'
-const { PosPrinter } = require('@3ksy/electron-pos-printer')
+// import image from '../../build/foodbook.png'
+// const { PosPrinter } = require('@3ksy/electron-pos-printer')
+const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 
 const express = require('express')
 const App = express()
 const cors = require('cors')
 
 let printer
-
+let mainWindow
 async function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+   mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -104,137 +105,157 @@ App.get('/FoodCart', async (req, res) => {
 
   res.json(printer).status(200)
 
-  function testPrint() {
-    const options = {
-      preview: true, //  width of content body
-      margin: 'auto', // margin of content body
-      copies: 1, // Number of copies to print
-      printerName: 'POS-80-Series', // printerName: string, check with webContent.getPrinters()
-      timeOutPerLine: 1000,
-      pageSize: '80mm', // page size,
-      silent: true
+
+
+
+  // function testPrint() {
+  //   const options = {
+  //     preview: true, //  width of content body
+  //     margin: 'auto', // margin of content body
+  //     copies: 1, // Number of copies to print
+  //     printerName: 'POS-80-Series', // printerName: string, check with webContent.getPrinters()
+  //     timeOutPerLine: 1000,
+  //     pageSize: '80mm', // page size,
+  //     silent: true
+  //   }
+
+  //   const data = [
+  //     {
+  //       type: 'image',
+  //       url: image, // file path
+  //       position: 'center', // position of image: 'left' | 'center' | 'right'
+  //       width: "150px", // width of image in px; default: auto
+  //       height : "70px" // width of image in px; default: 50 or '50px'
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+  //       value: 'Food Book :',
+  //       style: { fontWeight: '700', textAlign: 'center', fontSize: '25px' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+  //       value: 'Doha',
+  //       style: { fontWeight: '500', textAlign: 'center', fontSize: '15px' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Order No',
+  //       style: { fontSize: '30px', color: 'black', marginTop: '5px' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Token',
+  //       style: { marginTop: '5px', fontSize: '30px', color: 'black' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Order Date',
+  //       style: { marginTop: '5px', fontSize: '30px', color: 'black' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Customer',
+  //       style: { marginTop: '5px', fontSize: '30px', color: 'black' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Table',
+  //       style: { marginTop: '5px', fontSize: '30px', color: 'black' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Address',
+  //       style: { marginTop: '5px', fontSize: '30px', color: 'black' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: 'Waiter',
+  //       style: { marginTop: '5px', fontSize: '30px', color: 'black' }
+  //     },
+
+  //     {
+  //       type: 'table',
+  //       // style the table
+  //       style: { border: '1px solid #ddd', marginTop: '10px' },
+  //       // list of the columns to be rendered in the table header
+  //       tableHeader: ['Items', 'Service', 'Qty', 'Price', 'Amount'],
+  //       // multidimensional array depicting the rows and columns of the table body
+  //       tableBody: [
+  //         ['Orange Juice', 'Express', 2, 10, 20],
+  //         ['Apple Juice', 'Normal', 1, 5, 5],
+  //         ['Grape Juice', 'Express', 3, 8, 24]
+  //       ],
+  //       // list of columns to be rendered in the table footer
+  //       tableFooter: [
+  //         [
+  //           { type: 'text', value: 'Subtotal', style: { color: 'black' } },
+  //           { type: 'text', value: '', colspan: 2 }, // Empty cells to create space
+  //           123 // This is the subtotal amount
+  //         ],
+  //         [
+  //           { type: 'text', value: 'Tax', style: { color: 'black' } },
+  //           { type: 'text', value: '', colspan: 2 }, // Empty cells to create space
+  //           15 // This is the tax amount
+  //         ]
+  //       ],
+  //       // tableFooter: ['Total Quantity', '134'],
+  //       // custom style for the table header
+  //       tableHeaderStyle: { backgroundColor: 'white', color: 'black' },
+  //       // custom style for the table body
+  //       tableBodyStyle: { border: '0.5px solid #ddd' },
+  //       // custom style for the table footer
+  //       tableFooterStyle: { backgroundColor: 'white', color: 'black' }
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200`,
+  //       style: { marginTop: '5px', fontSize: '15px', color: 'black'}
+  //     },
+  //     {
+  //       type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+  //       value: `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5`,
+  //       style: { marginTop: '5px', fontSize: '15px', color: 'black', marginBottom: '10px' }
+  //     },
+  //     {
+  //       type: 'barCode',
+  //       value: '023456789010',
+  //       height: 40, // height of barcode, applicable only to bar and QR codes
+  //       width: 2, // width of barcode, applicable only to bar and QR codes
+  //       displayValue: true, // Display value below barcode
+  //       fontsize: 12,
+  //       style: { marginTop: '10px' }
+  //     }
+  //   ]
+
+  //   try {
+  //     PosPrinter.print(data, options)
+  //       .then(() => console.log('done'))
+  //       .catch((error) => {
+  //         console.error(error)
+  //       })
+  //   } catch (e) {
+  //     console.log(PosPrinter)
+  //     console.log(e)
+  //   }
+  // }
+  // testPrint()
+
+
+
+  let printer = new ThermalPrinter({
+    type: PrinterTypes.STAR,                                  // Printer type: 'star' or 'epson'
+    interface: 'POS-80-Series',                       // Printer interface
+    characterSet: CharacterSet.SLOVENIA,                      // Printer character set - default: SLOVENIA
+    removeSpecialCharacters: false,                           // Removes special characters - default: false
+    lineCharacter: "=",                                       // Set character for lines - default: "-"
+    breakLine: BreakLine.WORD,                                // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
+    options:{                                                 // Additional options
+      timeout: 5000                                           // Connection timeout (ms) [applicable only for network printers] - default: 3000
     }
+  });
 
-    const data = [
-      {
-        type: 'image',
-        url: image, // file path
-        position: 'center', // position of image: 'left' | 'center' | 'right'
-        width: "1.2rem", // width of image in px; default: auto
-        height : "1rem" // width of image in px; default: 50 or '50px'
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-        value: 'Food Book :',
-        style: { fontWeight: '700', textAlign: 'center', fontSize: '25px' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-        value: 'Doha',
-        style: { fontWeight: '500', textAlign: 'center', fontSize: '15px' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Order No',
-        style: { fontSize: '15px', color: 'black', marginTop: '5px' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Token',
-        style: { marginTop: '5px', fontSize: '15px', color: 'black' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Order Date',
-        style: { marginTop: '5px', fontSize: '15px', color: 'black' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Customer',
-        style: { marginTop: '5px', fontSize: '15px', color: 'black' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Table',
-        style: { marginTop: '5px', fontSize: '15px', color: 'black' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Address',
-        style: { marginTop: '5px', fontSize: '15px', color: 'black' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: 'Waiter',
-        style: { marginTop: '5px', fontSize: '15px', color: 'black' }
-      },
-
-      {
-        type: 'table',
-        // style the table
-        style: { border: '1px solid #ddd', marginTop: '10px' },
-        // list of the columns to be rendered in the table header
-        tableHeader: ['Items', 'Service', 'Qty', 'Price', 'Amount'],
-        // multidimensional array depicting the rows and columns of the table body
-        tableBody: [
-          ['Orange Juice', 'Express', 2, 10, 20],
-          ['Apple Juice', 'Normal', 1, 5, 5],
-          ['Grape Juice', 'Express', 3, 8, 24]
-        ],
-        // list of columns to be rendered in the table footer
-        tableFooter: [
-          [
-            { type: 'text', value: 'Subtotal', style: { color: 'black' } },
-            { type: 'text', value: '', colspan: 2 }, // Empty cells to create space
-            123 // This is the subtotal amount
-          ],
-          [
-            { type: 'text', value: 'Tax', style: { color: 'black' } },
-            { type: 'text', value: '', colspan: 2 }, // Empty cells to create space
-            15 // This is the tax amount
-          ]
-        ],
-        // tableFooter: ['Total Quantity', '134'],
-        // custom style for the table header
-        tableHeaderStyle: { backgroundColor: 'white', color: 'black' },
-        // custom style for the table body
-        tableBodyStyle: { border: '0.5px solid #ddd' },
-        // custom style for the table footer
-        tableFooterStyle: { backgroundColor: 'white', color: 'black' }
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200`,
-        style: { marginTop: '5px', fontSize: '15px', color: 'black'}
-      },
-      {
-        type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-        value: `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5`,
-        style: { marginTop: '5px', fontSize: '15px', color: 'black', marginBottom: '10px' }
-      },
-      {
-        type: 'barCode',
-        value: '023456789010',
-        height: 40, // height of barcode, applicable only to bar and QR codes
-        width: 2, // width of barcode, applicable only to bar and QR codes
-        displayValue: true, // Display value below barcode
-        fontsize: 12,
-        style: { marginTop: '10px' }
-      }
-    ]
-
-    try {
-      PosPrinter.print(data, options)
-        .then(() => console.log('done'))
-        .catch((error) => {
-          console.error(error)
-        })
-    } catch (e) {
-      console.log(PosPrinter)
-      console.log(e)
-    }
-  }
-  testPrint()
+  let isConnected = await printer.isPrinterConnected(); 
+  console.log(isConnected)
 })
 
 App.listen(PORT, () => {

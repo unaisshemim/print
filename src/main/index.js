@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
-// const { PosPrinter } = require('@3ksy/electron-pos-printer')
+const { PosPrinter } = require('@3ksy/electron-pos-printer')
 const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 
 const express = require('express')
@@ -243,12 +243,9 @@ App.get('/FoodCart', async (req, res) => {
 
 
   let printer = new ThermalPrinter({
-    type: PrinterTypes.STAR,                                  // Printer type: 'star' or 'epson'
-    interface: 'POS-80-Series',                       // Printer interface
-    characterSet: CharacterSet.SLOVENIA,                      // Printer character set - default: SLOVENIA
-    removeSpecialCharacters: false,                           // Removes special characters - default: false
-    lineCharacter: "=",                                       // Set character for lines - default: "-"
-    breakLine: BreakLine.WORD,                                // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
+                                    // Printer type: 'star' or 'epson'
+    interface: 'printer:POS-80-Series',                       // Printer interface
+    driver: 'printer',                             // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
     options:{                                                 // Additional options
       timeout: 5000                                           // Connection timeout (ms) [applicable only for network printers] - default: 3000
     }

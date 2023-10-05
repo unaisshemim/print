@@ -114,34 +114,7 @@ ipcMain.handle('test-print', () => {
       value: 'Secondary text',
       style: { textDecoration: 'underline', fontSize: '100px', textAlign: 'center', color: 'red' } // Increased font size to 100px
     },
-    {
-      type: 'table',
-      style: { border: '1px solid #ddd' },
-      tableHeader: ['Animal', 'Age'],
-      tableBody: [
-        ['Cat', 2],
-        ['Dog', 4],
-        ['Horse', 12],
-        ['Pig', 4]
-      ],
-      tableFooter: ['Animal', 'Age'],
-      tableHeaderStyle: { backgroundColor: '#000', color: 'white' },
-      tableBodyStyle: { border: '0.5px solid #ddd' },
-      tableFooterStyle: { backgroundColor: '#000', color: 'white' }
-    },
-    {
-      type: 'barCode',
-      value: '023456789010',
-      height: 400, // Increased height to 400 (10 times)
-      width: 20,   // Increased width to 20 (10 times)
-      displayValue: true,
-      fontsize: 120 // Increased font size to 120 (10 times)
-    },
-    {
-      type: 'text',
-      value: '************************',
-      style: { fontSize: '100px', textAlign: 'center', marginBottom: '100px' } // Increased font size to 100px and marginBottom to 100px
-    }
+   
   ];
   
   // Now, you can use this modified data array for printing with increased font sizes.

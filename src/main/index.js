@@ -106,7 +106,7 @@ ipcMain.handle('test-print',async () => {
 `;
   printFile({
   data: htmlToPrint,
-  printer: targetPrinterName,
+  printer: "POS-80-Series",
   type: 'RAW',
   success: function (jobID) {
     console.log(`Printing job ${jobID} sent to printer '${targetPrinterName}'`);

@@ -4,13 +4,12 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
 
-const { PosPrinter } = require('@3ksy/electron-pos-printer')
 
+const {printFile}=require('printer')
 const express = require('express')
 const App = express()
 const cors = require('cors')
 
-let printer
 let mainWindow
 async function createWindow() {
   // Create the browser window.
@@ -43,13 +42,8 @@ async function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-  const contents = mainWindow.webContents
-  try {
-    printer = await contents.getPrintersAsync()
-    console.log(printer)
-  } catch (error) {
-    console.error(error)
-  }
+ 
+
 }
 
 // This method will be called when Electron has finished
@@ -96,33 +90,30 @@ App.listen(PORT, () => {
 // In this file you can include the rest of your app"s specific main process
 
 // Print the list of USB printers
-ipcMain.handle('test-print', () => {
-  const options = {
-    preview: false, // Preview in window or print 
-    printerName: 'POS-80-Series', // printerName: string, check it at webContent.getPrinters()
-    silent: true
-  }
-
-  const data = [
-    {
-      type: 'text',
-      value: 'HEADER',
-      style: { fontSize: '180px', textAlign: 'center' } // Increased font size to 180px
-    },
-    {
-      type: 'text',
-      value: 'Secondary text',
-      style: { textDecoration: 'underline', fontSize: '100px', textAlign: 'center', color: 'red' } // Increased font size to 100px
-    },
-   
-  ];
+ipcMain.handle('test-print',async () => {
   
   // Now, you can use this modified data array for printing with increased font sizes.
-  
+  const htmlToPrint = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>Printing HTML from Node.js</title>
+  </head>
+  <body>
+    <h1>Hello, HTML Printing!</h1>
+  </body>
+  </html>
+`;
+  printFile({
+  data: htmlToPrint,
+  printer: targetPrinterName,
+  type: 'RAW',
+  success: function (jobID) {
+    console.log(`Printing job ${jobID} sent to printer '${targetPrinterName}'`);
+  },
+  error: function (err) {
+    console.error('Error printing:', err);
+  },
+});
 
-  PosPrinter.print(data, options)
-    .then(console.log)
-    .catch((error) => {
-      console.error(error)
-    })
 })

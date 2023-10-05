@@ -20,6 +20,7 @@
     "@3ksy/electron-pos-printer": "^1.4.9",
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
+    "@thiagoelg/node-printer": "^0.6.2",
     "axios": "^1.5.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

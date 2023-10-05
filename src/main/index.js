@@ -1,10 +1,10 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
-const {getPrinters}=require('@thiagoelg/node-printer')
 
+const { PosPrinter } = require('@3ksy/electron-pos-printer')
 
 const express = require('express')
 const App = express()
@@ -88,27 +88,10 @@ App.use(cors())
 App.use(express.json())
 
 const PORT = 3000 || process.env.port
-let data
-App.post('/FoodCart', async (req, res) => {
-  data = req.body
-  res.send('hello').status(200)
-})
 
-App.get('/FoodCart', async (req, res) => {
-  
 
-  res.json(printer).status(200)
 
-  const hi=async()=>{
-    try {
-      const response= await getPrinters()
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  hi()
-})
+
 
 App.listen(PORT, () => {
   console.log(`port is running on ${PORT}`)
@@ -116,5 +99,22 @@ App.listen(PORT, () => {
 
 // In this file you can include the rest of your app"s specific main process
 
-
 // Print the list of USB printers
+ipcMain.handle('test-print',()=>{
+  const options = {
+    preview: true,
+    margin: '0 0 0 0',
+    copies: 1,
+    printerName: 'XP-80C',
+    timeOutPerLine: 400,
+    pageSize: '80mm', // page size
+
+  }
+
+  PosPrinter.print(data, options)
+    .then(console.log)
+    .catch((error) => {
+      console.error(error)
+    })
+})
+

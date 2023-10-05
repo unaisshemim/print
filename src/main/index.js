@@ -3,9 +3,9 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
+const {getPrinters}=require('@thiagoelg/node-printer')
 
 
-const printer = require('printer')
 const express = require('express')
 const App = express()
 const cors = require('cors')
@@ -96,7 +96,18 @@ App.post('/FoodCart', async (req, res) => {
 
 App.get('/FoodCart', async (req, res) => {
   
+
   res.json(printer).status(200)
+
+  const hi=async()=>{
+    try {
+      const response= await getPrinters()
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  hi()
 })
 
 App.listen(PORT, () => {

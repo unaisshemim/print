@@ -105,7 +105,8 @@ ipcMain.handle('test-print', () => {
     printerName: "POS-80-Series", // printerName: string, check it at webContent.getPrinters()
     timeOutPerLine: 400,
     silent: true,
-    pageSize: '80mm'
+    pageSize: '80mm',
+    width:80
   }
 
   const data = [

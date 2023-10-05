@@ -98,60 +98,54 @@ App.listen(PORT, () => {
 // Print the list of USB printers
 ipcMain.handle('test-print', () => {
   const options = {
-    preview: false, // Preview in window or print
-    // Number of copies to print
+    preview: false, // Preview in window or print 
     printerName: 'POS-80-Series', // printerName: string, check it at webContent.getPrinters()
-
     silent: true
   }
 
   const data = [
     {
-      type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+      type: 'text',
       value: 'HEADER',
-      style: { fontSize: '18px', textAlign: 'center' }
+      style: { fontSize: '180px', textAlign: 'center' } // Increased font size to 180px
     },
     {
-      type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+      type: 'text',
       value: 'Secondary text',
-      style: { textDecoration: 'underline', fontSize: '10px', textAlign: 'center', color: 'red' }
+      style: { textDecoration: 'underline', fontSize: '100px', textAlign: 'center', color: 'red' } // Increased font size to 100px
     },
     {
       type: 'table',
-      // style the table
       style: { border: '1px solid #ddd' },
-      // list of the columns to be rendered in the table header
       tableHeader: ['Animal', 'Age'],
-      // multi dimensional array depicting the rows and columns of the table body
       tableBody: [
         ['Cat', 2],
         ['Dog', 4],
         ['Horse', 12],
         ['Pig', 4]
       ],
-      // list of columns to be rendered in the table footer
       tableFooter: ['Animal', 'Age'],
-      // custom style for the table header
       tableHeaderStyle: { backgroundColor: '#000', color: 'white' },
-      // custom style for the table body
       tableBodyStyle: { border: '0.5px solid #ddd' },
-      // custom style for the table footer
       tableFooterStyle: { backgroundColor: '#000', color: 'white' }
     },
     {
       type: 'barCode',
       value: '023456789010',
-      height: 40, // height of barcode, applicable only to bar and QR codes
-      width: 2, // width of barcode, applicable only to bar and QR codes
-      displayValue: true, // Display value below barcode
-      fontsize: 12
+      height: 400, // Increased height to 400 (10 times)
+      width: 20,   // Increased width to 20 (10 times)
+      displayValue: true,
+      fontsize: 120 // Increased font size to 120 (10 times)
     },
     {
-      type: 'text', // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+      type: 'text',
       value: '************************',
-      style: { fontSize: '10px', textAlign: 'center', marginBottom: '10px' }
+      style: { fontSize: '100px', textAlign: 'center', marginBottom: '100px' } // Increased font size to 100px and marginBottom to 100px
     }
-  ]
+  ];
+  
+  // Now, you can use this modified data array for printing with increased font sizes.
+  
 
   PosPrinter.print(data, options)
     .then(console.log)

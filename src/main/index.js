@@ -105,8 +105,5 @@ App.listen(PORT, () => {
 
 // In this file you can include the rest of your app"s specific main process
 
-const printers = printer.getPrinters()
 
-// Filter the list to include only USB-connected printers
-const usbPrinters = printers.filter((p) => p.connectionType === 'USB')
 // Print the list of USB printers

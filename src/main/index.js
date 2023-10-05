@@ -100,7 +100,7 @@ ipcMain.handle('test-print', () => {
  
   const options = {
     preview: false, // Preview in window or print
-    margin: '0 0 0 0', // margin of content body
+    margin: 'auto', // margin of content body
     copies: 1, // Number of copies to print
     printerName: "POS-80-Series", // printerName: string, check it at webContent.getPrinters()
     timeOutPerLine: 400,

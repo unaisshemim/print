@@ -97,16 +97,12 @@ App.listen(PORT, () => {
 
 // Print the list of USB printers
 ipcMain.handle('test-print', () => {
- 
   const options = {
     preview: false, // Preview in window or print
-    margin: 'auto', // margin of content body
-    copies: 1, // Number of copies to print
-    printerName: "POS-80-Series", // printerName: string, check it at webContent.getPrinters()
-    timeOutPerLine: 400,
-    silent: true,
-    pageSize: '80mm',
-    width:80
+    // Number of copies to print
+    printerName: 'POS-80-Series', // printerName: string, check it at webContent.getPrinters()
+
+    silent: true
   }
 
   const data = [

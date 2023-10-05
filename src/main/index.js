@@ -4,8 +4,8 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
 
-const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
-const printer = require('printer');
+const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer')
+const printer = require('printer')
 const express = require('express')
 const App = express()
 const cors = require('cors')
@@ -14,7 +14,7 @@ let printer
 let mainWindow
 async function createWindow() {
   // Create the browser window.
-   mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -95,32 +95,8 @@ App.post('/FoodCart', async (req, res) => {
 })
 
 App.get('/FoodCart', async (req, res) => {
-  //responsing the food
-
-  // if (data) {
-  //   res.json(data).status(200)
-  // } else {
-  //   res.send('no items found here').status(404)
-  // }
-
+  
   res.json(printer).status(200)
-
-
-
-  let printer = new ThermalPrinter({
-    type: PrinterTypes.STAR,                                  // Printer type: 'star' or 'epson'
-    interface: 'POS-80-Series',                       // Printer interface
-    characterSet: CharacterSet.SLOVENIA,                      // Printer character set - default: SLOVENIA
-    removeSpecialCharacters: false,                           // Removes special characters - default: false
-    lineCharacter: "=",                                       // Set character for lines - default: "-"
-    breakLine: BreakLine.WORD,                                // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
-    options:{                                                 // Additional options
-      timeout: 5000                                           // Connection timeout (ms) [applicable only for network printers] - default: 3000
-    }
-  });
-
-  let isConnected = await printer.isPrinterConnected(); 
-  console.log(isConnected)
 })
 
 App.listen(PORT, () => {
@@ -129,8 +105,8 @@ App.listen(PORT, () => {
 
 // In this file you can include the rest of your app"s specific main process
 
-const printers = printer.getPrinters();
+const printers = printer.getPrinters()
 
 // Filter the list to include only USB-connected printers
-const usbPrinters = printers.filter((p) => p.connectionType === 'USB');
+const usbPrinters = printers.filter((p) => p.connectionType === 'USB')
 // Print the list of USB printers

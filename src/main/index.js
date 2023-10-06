@@ -100,14 +100,14 @@ ipcMain.handle('test-print',async () => {
  
   const htmlData=`<h1>hello i am super</h1>`
   const options = {
-    preview: true,
+    preview: false,
     width: '300px',
     margin: '0 0 0 0',
     copies: 1,
     printerName: 'CUPS-BRF-Printer', // Replace with your printer name
     timeOutPerLine: 400,
     pageSize:'80mm' ,
-    silent:false
+    silent:true
   }
   const data = [
     {

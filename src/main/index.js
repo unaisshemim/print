@@ -101,8 +101,8 @@ ipcMain.handle('test-print',async () => {
 
   let printer = new ThermalPrinter({
     type: PrinterTypes.EPSON,
-    interface: 'printer:EPSON TM-U220 Receipt',
-    driver: require(electron ? 'electron-printer' : 'printer')
+    interface: 'EPSON TM-U220 Receipt',
+  
   
   });
   let isConnected = await printer.isPrinterConnected();  

@@ -4,6 +4,8 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
 
+const ThermalPrinter = require("node-thermal-printer").printer;
+const PrinterTypes = require("node-thermal-printer").types;
 
 const {printFile}=require('printer')
 const express = require('express')
@@ -93,27 +95,15 @@ App.listen(PORT, () => {
 ipcMain.handle('test-print',async () => {
   
   // Now, you can use this modified data array for printing with increased font sizes.
-  const htmlToPrint = `
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <title>Printing HTML from Node.js</title>
-  </head>
-  <body>
-    <h1>Hello, HTML Printing!</h1>
-  </body>
-  </html>
-`;
-  printFile({
-  data: htmlToPrint,
-  printer: "POS-80-Series",
-  type: 'RAW',
-  success: function () {
-    console.log(`Printing job  sent to printer '`);
-  },
-  error: function (err) {
-    console.error('Error printing:', err);
-  },
-});
+ 
+
+
+  let printer = new ThermalPrinter({
+    type: PrinterTypes.EPSON,
+    interface: 'printer:EPSON TM-U220 Receipt',
+  
+  });
+  let isConnected = await printer.isPrinterConnected();  
+  console.log(isConnected)
 
 })

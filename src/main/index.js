@@ -108,8 +108,8 @@ ipcMain.handle('test-print',async () => {
   data: htmlToPrint,
   printer: "POS-80-Series",
   type: 'RAW',
-  success: function (jobID) {
-    console.log(`Printing job ${jobID} sent to printer '${targetPrinterName}'`);
+  success: function () {
+    console.log(`Printing job  sent to printer '`);
   },
   error: function (err) {
     console.error('Error printing:', err);

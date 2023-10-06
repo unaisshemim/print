@@ -6,6 +6,7 @@ import icon from '../../resources/icon.png?asset'
 
 const ThermalPrinter = require("node-thermal-printer").printer;
 const PrinterTypes = require("node-thermal-printer").types;
+const electron = typeof process !== 'undefined' && process.versions && !!process.versions.electron;
 
 
 const express = require('express')
@@ -101,6 +102,7 @@ ipcMain.handle('test-print',async () => {
   let printer = new ThermalPrinter({
     type: PrinterTypes.EPSON,
     interface: 'printer:EPSON TM-U220 Receipt',
+    driver: require(electron ? 'electron-printer' : 'printer')
   
   });
   let isConnected = await printer.isPrinterConnected();  

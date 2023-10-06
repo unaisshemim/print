@@ -3,11 +3,12 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import image from '../../build/foodbook.png'
+// const printer = require('printer');
+// const ThermalPrinter = require("node-thermal-printer").printer;
+// const PrinterTypes = require("node-thermal-printer").types;
+const { PosPrinter } = require("@3ksy/electron-pos-printer");
 
-const ThermalPrinter = require("node-thermal-printer").printer;
-const PrinterTypes = require("node-thermal-printer").types;
-const electron = typeof process !== 'undefined' && process.versions && !!process.versions.electron;
-
+const path = require("path");
 
 const express = require('express')
 const App = express()
@@ -97,16 +98,31 @@ ipcMain.handle('test-print',async () => {
   
   // Now, you can use this modified data array for printing with increased font sizes.
  
-
-
-  let printer = new ThermalPrinter({
-    type: PrinterTypes.EPSON,
-    // interface: 'EPSON TM-U220 Receipt',
-    interface:'auto'
+  const htmlData=`<h1>hello i am super</h1>`
+  const options = {
+    preview: true,
+    width: '300px',
+    margin: '0 0 0 0',
+    copies: 1,
+    printerName: 'CUPS-BRF-Printer', // Replace with your printer name
+    timeOutPerLine: 400,
+    pageSize:'80mm' ,
+    silent:false
+  }
+  const data = [
+    {
+      type: 'text',
+      value: htmlData,
+      style:{ textAlign:'center'}
+    },
+    // More data here...
+  ]
   
+  PosPrinter.print(data, options)
+  .then(() => { console.log("Print success."); })
+  .catch((error) => { console.error("Print error:", error); });
+
   
-  });
-  let isConnected = await printer.isPrinterConnected();  
-  console.log(isConnected)
+
 
 })

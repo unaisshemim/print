@@ -7,7 +7,7 @@ import icon from '../../resources/icon.png?asset'
 const ThermalPrinter = require("node-thermal-printer").printer;
 const PrinterTypes = require("node-thermal-printer").types;
 
-const {printFile}=require('printer')
+
 const express = require('express')
 const App = express()
 const cors = require('cors')

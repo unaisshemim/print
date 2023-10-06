@@ -101,7 +101,8 @@ ipcMain.handle('test-print',async () => {
 
   let printer = new ThermalPrinter({
     type: PrinterTypes.EPSON,
-    interface: 'EPSON TM-U220 Receipt',
+    // interface: 'EPSON TM-U220 Receipt',
+    interface:'auto'
   
   
   });

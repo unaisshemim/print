@@ -92,7 +92,7 @@ App.listen(PORT, () => {
 ipcMain.handle('test-print', async () => {
   // Now, you can use this mcodified data array for printing with increased font sizes.
 
-  EPSON TM-U220 Receipt
+  // EPSON TM-U220 Receipt
 
   
   let printer = new ThermalPrinter({

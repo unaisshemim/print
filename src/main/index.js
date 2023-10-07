@@ -4,7 +4,8 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 // import { PosPrinter } from '@3ksy/electron-pos-printer'
 
-const { Printer, Types } = require('node-thermal-printer');
+const ThermalPrinter = require("node-thermal-printer").printer;
+const PrinterTypes = require("node-thermal-printer").types;
 
 const express = require('express')
 const App = express()
@@ -94,8 +95,8 @@ ipcMain.handle('test-print', async () => {
   // EPSON TM-U220 Receipt
 //ESDPRT001
   
-const printer = await new Printer({
-  type: Types.EPSON, // Specify the printer type ('star' or 'epson')
+const printer =  new ThermalPrinter({
+  type: PrinterTypes.EPSON, // Specify the printer type ('star' or 'epson')
   interface: '//ESDPRT001', // Use the network printer name as the interface
 });
   let isConnected = await printer.isPrinterConnected();

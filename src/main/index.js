@@ -98,10 +98,7 @@ ipcMain.handle('test-print', async () => {
   let printer = new ThermalPrinter({
     type: PrinterTypes.EPSON,                                  // Printer type: 'star' or 'epson'
                         // Printer interface
-    characterSet: CharacterSet.SLOVENIA,                      // Printer character set - default: SLOVENIA
-    removeSpecialCharacters: false,                           // Removes special characters - default: false
-    lineCharacter: "=",                                       // Set character for lines - default: "-"
-    breakLine: BreakLine.WORD,                                // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
+                                 // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
     options:{                                                 // Additional options
       timeout: 5000                                           // Connection timeout (ms) [applicable only for network printers] - default: 3000
     }

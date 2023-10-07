@@ -103,7 +103,7 @@ ipcMain.handle('test-print', async () => {
   const htmlData = `<h1 style="color:red;">hello i am super</h1><h2>hello my name is unais</h2>${newArray}`
   const options = {
     preview: false,
-    width: '1000px',
+    width: 'auto',
     margin: '0 0 0 0',
     copies: 1,
     printerName: 'POS-80-Series', // Replace with your printer name

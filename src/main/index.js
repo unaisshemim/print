@@ -6,9 +6,9 @@ import icon from '../../resources/icon.png?asset'
 // const printer = require('printer');
 // const ThermalPrinter = require("node-thermal-printer").printer;
 // const PrinterTypes = require("node-thermal-printer").types;
-const { PosPrinter } = require("@3ksy/electron-pos-printer");
+const { PosPrinter } = require('@3ksy/electron-pos-printer')
 
-const path = require("path");
+const path = require('path')
 
 const express = require('express')
 const App = express()
@@ -46,8 +46,6 @@ async function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
- 
-
 }
 
 // This method will be called when Electron has finished
@@ -94,35 +92,39 @@ App.listen(PORT, () => {
 // In this file you can include the rest of your app"s specific main process
 
 // Print the list of USB printers
-ipcMain.handle('test-print',async () => {
-  
-  // Now, you can use this modified data array for printing with increased font sizes.
- 
-  const htmlData=`<h1>hello i am super</h1>`
+ipcMain.handle('test-print', async () => {
+  // Now, you can use this mcodified data array for printing with increased font sizes.
+  const array = [1, 2, 3, 4, 5, 6].map((value) => `<h1>${value}</h1>`)
+
+  const newArray = [array.join('')]
+  console.log(newArray)
+
+
+  const htmlData = `<h1 style="color:red;">hello i am super</h1><h2>hello my name is unais</h2>${newArray}`
   const options = {
     preview: false,
     width: '300px',
     margin: '0 0 0 0',
     copies: 1,
-    printerName: 'CUPS-BRF-Printer', // Replace with your printer name
+    printerName: 'POS-80-Series', // Replace with your printer name
     timeOutPerLine: 400,
-    pageSize:'80mm' ,
-    silent:true
+    pageSize: '80mm',
+    silent: true
   }
   const data = [
     {
       type: 'text',
       value: htmlData,
-      style:{ textAlign:'center'}
-    },
+      style: { textAlign: 'center' }
+    }
     // More data here...
   ]
-  
+
   PosPrinter.print(data, options)
-  .then(() => { console.log("Print success."); })
-  .catch((error) => { console.error("Print error:", error); });
-
-  
-
-
+    .then(() => {
+      console.log('Print success.')
+    })
+    .catch((error) => {
+      console.error('Print error:', error)
+    })
 })

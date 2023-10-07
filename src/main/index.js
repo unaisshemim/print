@@ -97,7 +97,7 @@ ipcMain.handle('test-print', async () => {
   
 const printer =  new ThermalPrinter({
   type: PrinterTypes.EPSON, // Specify the printer type ('star' or 'epson')
-  interface: '//ESDPRT001', // Use the network printer name as the interface
+  interface: 'printer:EPSON TM-U220 Receipt', // Use the network printer name as the interface
 });
   let isConnected = await printer.isPrinterConnected();
   console.log(isConnected)

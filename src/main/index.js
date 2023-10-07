@@ -97,7 +97,7 @@ ipcMain.handle('test-print', async () => {
   
   let printer = new ThermalPrinter({
     type: PrinterTypes.EPSON,                                  // Printer type: 'star' or 'epson'
-                        // Printer interface
+    interface:'printer:EPSON TM-U220 Receipt',   // Printer interface
                                  // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
     options:{                                                 // Additional options
       timeout: 5000                                           // Connection timeout (ms) [applicable only for network printers] - default: 3000

@@ -2,10 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { PosPrinter } from '@3ksy/electron-pos-printer'
+// import { PosPrinter } from '@3ksy/electron-pos-printer'
 
-const ThermalPrinter = require("node-thermal-printer").printer;
-const PrinterTypes = require("node-thermal-printer").types;
+const { Printer, Types } = require('node-thermal-printer');
 
 const express = require('express')
 const App = express()
@@ -93,16 +92,12 @@ ipcMain.handle('test-print', async () => {
   // Now, you can use this mcodified data array for printing with increased font sizes.
 
   // EPSON TM-U220 Receipt
-
+//ESDPRT001
   
-  let printer = new ThermalPrinter({
-    type: PrinterTypes.EPSON,                                  // Printer type: 'star' or 'epson'
-    interface:'printer:EPSON TM-U220 Receipt',   // Printer interface
-                                 // Break line after WORD or CHARACTERS. Disabled with NONE - default: WORD
-    options:{                                                 // Additional options
-      timeout: 5000                                           // Connection timeout (ms) [applicable only for network printers] - default: 3000
-    }
-  });
+const printer = new Printer({
+  type: Types.EPSON, // Specify the printer type ('star' or 'epson')
+  interface: '//ESDPRT001', // Use the network printer name as the interface
+});
   let isConnected = await printer.isPrinterConnected();
   console.log(isConnected)
 

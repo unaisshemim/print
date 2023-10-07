@@ -2,13 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-// import image from '../../build/foodbook.png'
-// const printer = require('printer');
-// const ThermalPrinter = require("node-thermal-printer").printer;
-// const PrinterTypes = require("node-thermal-printer").types;
-const { PosPrinter } = require('@3ksy/electron-pos-printer')
 
-const path = require('path')
+
+const Printer = require('node-thermal-printer');
 
 const express = require('express')
 const App = express()
@@ -94,37 +90,43 @@ App.listen(PORT, () => {
 // Print the list of USB printers
 ipcMain.handle('test-print', async () => {
   // Now, you can use this mcodified data array for printing with increased font sizes.
-  const array = [1, 2, 3, 4, 5, 6].map((value) => `<h1>${value}</h1>`)
+  // const array = [1, 2, 3, 4, 5, 6].map((value) => `<h1>${value}</h1>`)
 
-  const newArray = [array.join('')]
-  console.log(newArray)
+  // const newArray = [array.join('')]
+  // console.log(newArray)
 
 
-  const htmlData = `<h1 style="color:red;">hello i am super</h1><h2>hello my name is unais</h2>${newArray}`
-  const options = {
-    preview: false,
-    width: 'auto',
-    margin: '0 0 0 0',
-    copies: 1,
-    printerName: 'POS-80-Series', // Replace with your printer name
-    timeOutPerLine: 400,
-    pageSize: '80mm',
-    silent: true
-  }
-  const data = [
-    {
-      type: 'text',
-      value: htmlData,
-      style: { textAlign: 'center' }
-    }
-    // More data here...
-  ]
+  // const htmlData = `<h1 style="color:red;">hello i am super</h1><h2>hello my name is unais</h2>${newArray}`
+  // const options = {
+  //   preview: false,
+  //   width: 'auto',
+  //   margin: '0 0 0 0',
+  //   copies: 1,
+  //   printerName: 'POS-80-Series', // Replace with your printer name
+  //   timeOutPerLine: 400,
+  //   pageSize: '80mm',
+  //   silent: true
+  // }
+  // const data = [
+  //   {
+  //     type: 'text',
+  //     value: htmlData,
+  //     style: { textAlign: 'center' }
+  //   }
+  //   // More data here...
+  // ]
 
-  PosPrinter.print(data, options)
-    .then(() => {
-      console.log('Print success.')
-    })
-    .catch((error) => {
-      console.error('Print error:', error)
-    })
+  // PosPrinter.print(data, options)
+  //   .then(() => {
+  //     console.log('Print success.')
+  //   })
+  //   .catch((error) => {
+  //     console.error('Print error:', error)
+  //   })
+  const printer = new Printer({
+    type: 'custom', // Replace with your printer type (e.g., 'star', 'epson', 'custom')
+    interface: 'POS-80-Series', // Replace with your printer's name or IP address
+    });
+    let isConnected = await printer.isPrinterConnected();  
+    console.log(isConnected)
 })

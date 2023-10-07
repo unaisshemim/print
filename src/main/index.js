@@ -94,7 +94,7 @@ ipcMain.handle('test-print', async () => {
   // EPSON TM-U220 Receipt
 //ESDPRT001
   
-const printer = new Printer({
+const printer = await new Printer({
   type: Types.EPSON, // Specify the printer type ('star' or 'epson')
   interface: '//ESDPRT001', // Use the network printer name as the interface
 });
